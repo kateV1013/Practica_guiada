@@ -20,7 +20,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<VBox spacing="14.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+<VBox spacing="14.0" xmlns="http://javafx.com/javafx/21.0.6" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="ni.edu.uam.practica.controllers.ProductoController">
     <padding>
         <Insets bottom="18.0" left="18.0" right="18.0" top="18.0" />
