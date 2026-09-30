@@ -15,9 +15,13 @@ CREATE TABLE IF NOT EXISTS producto (
     categoria_id INTEGER NOT NULL,
     precio_venta NUMERIC(12,2) NOT NULL,
     existencia INTEGER NOT NULL DEFAULT 0,
+    foto_ruta VARCHAR(500),
     activo BOOLEAN NOT NULL DEFAULT TRUE,
 
     CONSTRAINT fk_producto_categoria
         FOREIGN KEY (categoria_id)
         REFERENCES categoria(id)
 );
+
+ALTER TABLE producto
+ADD COLUMN IF NOT EXISTS foto_ruta VARCHAR(500);

@@ -23,9 +23,10 @@ public class ProductoDAO {
                     categoria_id,
                     precio_venta,
                     existencia,
+                    foto_ruta,
                     activo
                 )
-                VALUES (?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
                 """;
 
         try (Connection connection = DatabaseConnection.getConnection();
@@ -36,7 +37,8 @@ public class ProductoDAO {
             ps.setInt(3, producto.getCategoria().getId());
             ps.setBigDecimal(4, producto.getPrecioVenta());
             ps.setInt(5, producto.getExistencia());
-            ps.setBoolean(6, producto.isActivo());
+            ps.setString(6, producto.getFotoRuta());
+            ps.setBoolean(7, producto.isActivo());
             ps.executeUpdate();
         }
     }
@@ -44,7 +46,7 @@ public class ProductoDAO {
     public List<Producto> listar() throws SQLException {
         List<Producto> productos = new ArrayList<>();
         String sql = """
-                SELECT p.id, p.codigo, p.nombre, p.precio_venta, p.existencia, p.activo,
+                SELECT p.id, p.codigo, p.nombre, p.precio_venta, p.existencia, p.foto_ruta, p.activo,
                        c.id AS categoria_id, c.nombre AS categoria_nombre, c.activa AS categoria_activa
                 FROM producto p
                 INNER JOIN categoria c ON c.id = p.categoria_id
@@ -65,7 +67,7 @@ public class ProductoDAO {
 
     public Optional<Producto> buscar(int id) throws SQLException {
         String sql = """
-                SELECT p.id, p.codigo, p.nombre, p.precio_venta, p.existencia, p.activo,
+                SELECT p.id, p.codigo, p.nombre, p.precio_venta, p.existencia, p.foto_ruta, p.activo,
                        c.id AS categoria_id, c.nombre AS categoria_nombre, c.activa AS categoria_activa
                 FROM producto p
                 INNER JOIN categoria c ON c.id = p.categoria_id
@@ -95,6 +97,7 @@ public class ProductoDAO {
                     categoria_id = ?,
                     precio_venta = ?,
                     existencia = ?,
+                    foto_ruta = ?,
                     activo = ?
                 WHERE id = ?
                 """;
@@ -107,8 +110,9 @@ public class ProductoDAO {
             ps.setInt(3, producto.getCategoria().getId());
             ps.setBigDecimal(4, producto.getPrecioVenta());
             ps.setInt(5, producto.getExistencia());
-            ps.setBoolean(6, producto.isActivo());
-            ps.setInt(7, producto.getId());
+            ps.setString(6, producto.getFotoRuta());
+            ps.setBoolean(7, producto.isActivo());
+            ps.setInt(8, producto.getId());
             ps.executeUpdate();
         }
     }
@@ -138,6 +142,7 @@ public class ProductoDAO {
                 categoria,
                 rs.getBigDecimal("precio_venta"),
                 rs.getInt("existencia"),
+                rs.getString("foto_ruta"),
                 rs.getBoolean("activo")
         );
     }

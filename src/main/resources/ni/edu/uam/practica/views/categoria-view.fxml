@@ -1,25 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.Background?>
-<?import javafx.scene.layout.BackgroundFill?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.CornerRadii?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.paint.Color?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
 
-<VBox spacing="14.0" xmlns="http://javafx.com/javafx/21.0.6" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="ni.edu.uam.practica.controllers.CategoriaController">
+<VBox spacing="14.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ni.edu.uam.practica.controllers.CategoriaController">
     <padding>
         <Insets bottom="18.0" left="18.0" right="18.0" top="18.0" />
     </padding>
@@ -33,7 +20,7 @@
                 <Font size="20.0" />
             </font>
         </Label>
-        <Label text="Crea, actualiza y elimina categorias de productos.">
+        <Label>
             <textFill>
                 <Color red="0.3568627450980392" green="0.39215686274509803" blue="0.4470588235294118" />
             </textFill>
@@ -69,18 +56,25 @@
         </columnConstraints>
 
         <Label text="Id" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-        <TextField fx:id="idField" editable="false" promptText="Generado automaticamente"
-                   GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <TextField fx:id="idField" editable="false" promptText="Generado automaticamente" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
         <Label text="Nombre" GridPane.columnIndex="0" GridPane.rowIndex="1" />
         <TextField fx:id="nombreField" promptText="Ej. Bebidas" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
         <Label text="Estado" GridPane.columnIndex="0" GridPane.rowIndex="2" />
         <CheckBox fx:id="activaCheck" text="Categoria activa" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <rowConstraints>
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+      </rowConstraints>
     </GridPane>
 
     <HBox alignment="CENTER_RIGHT" spacing="8.0">
-        <Button onAction="#limpiarFormulario" text="Limpiar">
+        <Button contentDisplay="LEFT" graphicTextGap="6.0" onAction="#limpiarFormulario" text="Limpiar">
+            <graphic>
+                <Label text="↺" />
+            </graphic>
             <background>
                 <Background>
                     <fills>
@@ -99,7 +93,14 @@
                 </Background>
             </background>
         </Button>
-        <Button onAction="#eliminarCategoria" text="Eliminar">
+        <Button contentDisplay="LEFT" graphicTextGap="6.0" onAction="#eliminarCategoria" text="Eliminar">
+            <graphic>
+                <Label text="✕">
+                    <textFill>
+                        <Color red="0.7254901960784313" green="0.10980392156862745" blue="0.10980392156862745" />
+                    </textFill>
+                </Label>
+            </graphic>
             <textFill>
                 <Color red="0.7254901960784313" green="0.10980392156862745" blue="0.10980392156862745" />
             </textFill>
@@ -121,7 +122,10 @@
                 </Background>
             </background>
         </Button>
-        <Button onAction="#actualizarCategoria" text="Actualizar">
+        <Button contentDisplay="LEFT" graphicTextGap="6.0" onAction="#actualizarCategoria" text="Actualizar">
+            <graphic>
+                <Label text="↻" />
+            </graphic>
             <background>
                 <Background>
                     <fills>
@@ -140,7 +144,14 @@
                 </Background>
             </background>
         </Button>
-        <Button defaultButton="true" onAction="#guardarCategoria" text="Guardar">
+        <Button contentDisplay="LEFT" defaultButton="true" graphicTextGap="6.0" onAction="#guardarCategoria" text="Guardar">
+            <graphic>
+                <Label text="✓">
+                    <textFill>
+                        <Color red="1.0" green="1.0" blue="1.0" />
+                    </textFill>
+                </Label>
+            </graphic>
             <textFill>
                 <Color red="1.0" green="1.0" blue="1.0" />
             </textFill>

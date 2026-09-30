@@ -9,19 +9,21 @@ public class Producto {
     private Categoria categoria;
     private BigDecimal precioVenta;
     private int existencia;
+    private String fotoRuta;
     private boolean activo;
 
     public Producto() {
     }
 
     public Producto(Integer id, String codigo, String nombre, Categoria categoria, BigDecimal precioVenta,
-                    int existencia, boolean activo) {
+                    int existencia, String fotoRuta, boolean activo) {
         this.id = id;
         this.codigo = codigo;
         this.nombre = nombre;
         this.categoria = categoria;
         this.precioVenta = precioVenta;
         this.existencia = existencia;
+        this.fotoRuta = fotoRuta;
         this.activo = activo;
     }
 
@@ -73,6 +75,14 @@ public class Producto {
         this.existencia = existencia;
     }
 
+    public String getFotoRuta() {
+        return fotoRuta;
+    }
+
+    public void setFotoRuta(String fotoRuta) {
+        this.fotoRuta = fotoRuta;
+    }
+
     public boolean isActivo() {
         return activo;
     }
@@ -83,5 +93,9 @@ public class Producto {
 
     public String getNombreCategoria() {
         return categoria != null ? categoria.getNombre() : "";
+    }
+
+    public String getEstadoFoto() {
+        return fotoRuta == null || fotoRuta.isBlank() ? "Sin foto" : "Con foto";
     }
 }

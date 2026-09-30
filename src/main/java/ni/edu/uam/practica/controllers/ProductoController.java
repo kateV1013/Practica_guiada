@@ -13,12 +13,16 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import ni.edu.uam.practica.dao.CategoriaDAO;
 import ni.edu.uam.practica.dao.ProductoDAO;
 import ni.edu.uam.practica.models.Categoria;
 import ni.edu.uam.practica.models.Producto;
 import ni.edu.uam.practica.utils.DatabaseErrorFormatter;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Locale;
@@ -31,6 +35,8 @@ public class ProductoController {
     @FXML private ComboBox<Categoria> categoriaCombo;
     @FXML private TextField precioField;
     @FXML private TextField existenciaField;
+    @FXML private TextField fotoRutaField;
+    @FXML private ImageView fotoPreview;
     @FXML private CheckBox activoCheck;
     @FXML private TextField busquedaField;
     @FXML private ComboBox<String> estadoFiltroCombo;
@@ -42,6 +48,7 @@ public class ProductoController {
     @FXML private TableColumn<Producto, String> categoriaColumn;
     @FXML private TableColumn<Producto, BigDecimal> precioColumn;
     @FXML private TableColumn<Producto, Integer> existenciaColumn;
+    @FXML private TableColumn<Producto, String> fotoColumn;
     @FXML private TableColumn<Producto, Boolean> activoColumn;
     @FXML private Label resultadoLabel;
 
@@ -59,6 +66,7 @@ public class ProductoController {
         categoriaColumn.setCellValueFactory(new PropertyValueFactory<>("nombreCategoria"));
         precioColumn.setCellValueFactory(new PropertyValueFactory<>("precioVenta"));
         existenciaColumn.setCellValueFactory(new PropertyValueFactory<>("existencia"));
+        fotoColumn.setCellValueFactory(new PropertyValueFactory<>("estadoFoto"));
         activoColumn.setCellValueFactory(new PropertyValueFactory<>("activo"));
 
         categoriaCombo.setItems(categorias);
@@ -81,6 +89,29 @@ public class ProductoController {
         activoCheck.setSelected(true);
         cargarCategorias();
         cargarProductos();
+    }
+
+    @FXML
+    private void seleccionarFoto() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Seleccionar foto del producto");
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Imagenes", "*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp")
+        );
+
+        File archivo = fileChooser.showOpenDialog(fotoRutaField.getScene().getWindow());
+        if (archivo == null) {
+            return;
+        }
+
+        fotoRutaField.setText(archivo.getAbsolutePath());
+        mostrarFoto(archivo.getAbsolutePath());
+    }
+
+    @FXML
+    private void quitarFoto() {
+        fotoRutaField.clear();
+        fotoPreview.setImage(null);
     }
 
     @FXML
@@ -156,6 +187,7 @@ public class ProductoController {
         categoriaCombo.getSelectionModel().clearSelection();
         precioField.clear();
         existenciaField.clear();
+        quitarFoto();
         activoCheck.setSelected(true);
         productoTable.getSelectionModel().clearSelection();
     }
@@ -237,6 +269,7 @@ public class ProductoController {
                 categoria,
                 precio,
                 existencia,
+                normalizarFotoRuta(fotoRutaField.getText()),
                 activoCheck.isSelected()
         );
     }
@@ -287,7 +320,31 @@ public class ProductoController {
         seleccionarCategoria(producto.getCategoria());
         precioField.setText(producto.getPrecioVenta().toPlainString());
         existenciaField.setText(String.valueOf(producto.getExistencia()));
+        fotoRutaField.setText(producto.getFotoRuta());
+        mostrarFoto(producto.getFotoRuta());
         activoCheck.setSelected(producto.isActivo());
+    }
+
+    private void mostrarFoto(String ruta) {
+        if (ruta == null || ruta.isBlank()) {
+            fotoPreview.setImage(null);
+            return;
+        }
+
+        try {
+            fotoPreview.setImage(new Image(new File(ruta).toURI().toString(), true));
+        } catch (IllegalArgumentException e) {
+            fotoPreview.setImage(null);
+            mostrarMensaje("No se pudo cargar la foto seleccionada.", true);
+        }
+    }
+
+    private String normalizarFotoRuta(String ruta) {
+        if (ruta == null || ruta.isBlank()) {
+            return null;
+        }
+
+        return ruta.trim();
     }
 
     private void seleccionarCategoria(Categoria categoriaProducto) {
