@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.Background?>
+<?import javafx.scene.layout.BackgroundFill?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.CornerRadii?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+    <background>
+        <Background>
+            <fills>
+                <BackgroundFill>
+                    <fill>
+                        <Color red="0.9490196078431372" green="0.9647058823529412" blue="0.984313725490196" />
+                    </fill>
+                    <radii>
+                        <CornerRadii />
+                    </radii>
+                    <insets>
+                        <Insets />
+                    </insets>
+                </BackgroundFill>
+            </fills>
+        </Background>
+    </background>
+    <top>
+        <VBox spacing="4.0">
+            <background>
+                <Background>
+                    <fills>
+                        <BackgroundFill>
+                            <fill>
+                                <Color red="0.12156862745098039" green="0.1607843137254902" blue="0.21568627450980393" />
+                            </fill>
+                            <radii>
+                                <CornerRadii radius="8.0" />
+                            </radii>
+                            <insets>
+                                <Insets />
+                            </insets>
+                        </BackgroundFill>
+                    </fills>
+                </Background>
+            </background>
+            <BorderPane.margin>
+                <Insets bottom="12.0" left="18.0" right="18.0" top="18.0" />
+            </BorderPane.margin>
+            <padding>
+                <Insets bottom="16.0" left="18.0" right="18.0" top="16.0" />
+            </padding>
+            <Label text="Gestion de Inventario">
+                <textFill>
+                    <Color red="1.0" green="1.0" blue="1.0" />
+                </textFill>
+                <font>
+                    <Font size="22.0" />
+                </font>
+            </Label>
+            <Label text="Categorias y productos conectados a PostgreSQL">
+                <textFill>
+                    <Color red="0.796078431372549" green="0.8352941176470589" blue="0.8823529411764706" />
+                </textFill>
+            </Label>
+        </VBox>
+    </top>
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE">
+            <BorderPane.margin>
+                <Insets bottom="18.0" left="18.0" right="18.0" />
+            </BorderPane.margin>
+            <Tab text="Categorias">
+                <fx:include source="categoria-view.fxml" />
+            </Tab>
+            <Tab text="Productos">
+                <fx:include source="producto-view.fxml" />
+            </Tab>
+        </TabPane>
+    </center>
+</BorderPane>

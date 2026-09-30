@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Background?>
+<?import javafx.scene.layout.BackgroundFill?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.CornerRadii?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="14.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="ni.edu.uam.practica.controllers.CategoriaController">
+    <padding>
+        <Insets bottom="18.0" left="18.0" right="18.0" top="18.0" />
+    </padding>
+
+    <VBox spacing="3.0">
+        <Label text="Categorias">
+            <textFill>
+                <Color red="0.08627450980392157" green="0.12549019607843137" blue="0.2" />
+            </textFill>
+            <font>
+                <Font size="20.0" />
+            </font>
+        </Label>
+        <Label text="Crea, actualiza y elimina categorias de productos.">
+            <textFill>
+                <Color red="0.3568627450980392" green="0.39215686274509803" blue="0.4470588235294118" />
+            </textFill>
+        </Label>
+    </VBox>
+
+    <Separator />
+
+    <GridPane hgap="12.0" vgap="12.0">
+        <background>
+            <Background>
+                <fills>
+                    <BackgroundFill>
+                        <fill>
+                            <Color red="0.9725490196078431" green="0.9803921568627451" blue="0.9921568627450981" />
+                        </fill>
+                        <radii>
+                            <CornerRadii radius="8.0" />
+                        </radii>
+                        <insets>
+                            <Insets />
+                        </insets>
+                    </BackgroundFill>
+                </fills>
+            </Background>
+        </background>
+        <padding>
+            <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+        </padding>
+        <columnConstraints>
+            <ColumnConstraints minWidth="95.0" percentWidth="26.0" />
+            <ColumnConstraints hgrow="ALWAYS" percentWidth="74.0" />
+        </columnConstraints>
+
+        <Label text="Id" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <TextField fx:id="idField" editable="false" promptText="Generado automaticamente"
+                   GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+        <Label text="Nombre" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <TextField fx:id="nombreField" promptText="Ej. Bebidas" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+        <Label text="Estado" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <CheckBox fx:id="activaCheck" text="Categoria activa" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+    </GridPane>
+
+    <HBox alignment="CENTER_RIGHT" spacing="8.0">
+        <Button onAction="#limpiarFormulario" text="Limpiar">
+            <background>
+                <Background>
+                    <fills>
+                        <BackgroundFill>
+                            <fill>
+                                <Color red="0.8862745098039215" green="0.9098039215686274" blue="0.9411764705882353" />
+                            </fill>
+                            <radii>
+                                <CornerRadii radius="6.0" />
+                            </radii>
+                            <insets>
+                                <Insets />
+                            </insets>
+                        </BackgroundFill>
+                    </fills>
+                </Background>
+            </background>
+        </Button>
+        <Button onAction="#eliminarCategoria" text="Eliminar">
+            <textFill>
+                <Color red="0.7254901960784313" green="0.10980392156862745" blue="0.10980392156862745" />
+            </textFill>
+            <background>
+                <Background>
+                    <fills>
+                        <BackgroundFill>
+                            <fill>
+                                <Color red="0.996078431372549" green="0.8862745098039215" blue="0.8862745098039215" />
+                            </fill>
+                            <radii>
+                                <CornerRadii radius="6.0" />
+                            </radii>
+                            <insets>
+                                <Insets />
+                            </insets>
+                        </BackgroundFill>
+                    </fills>
+                </Background>
+            </background>
+        </Button>
+        <Button onAction="#actualizarCategoria" text="Actualizar">
+            <background>
+                <Background>
+                    <fills>
+                        <BackgroundFill>
+                            <fill>
+                                <Color red="0.8862745098039215" green="0.9098039215686274" blue="0.9411764705882353" />
+                            </fill>
+                            <radii>
+                                <CornerRadii radius="6.0" />
+                            </radii>
+                            <insets>
+                                <Insets />
+                            </insets>
+                        </BackgroundFill>
+                    </fills>
+                </Background>
+            </background>
+        </Button>
+        <Button defaultButton="true" onAction="#guardarCategoria" text="Guardar">
+            <textFill>
+                <Color red="1.0" green="1.0" blue="1.0" />
+            </textFill>
+            <background>
+                <Background>
+                    <fills>
+                        <BackgroundFill>
+                            <fill>
+                                <Color red="0.1450980392156863" green="0.38823529411764707" blue="0.9215686274509803" />
+                            </fill>
+                            <radii>
+                                <CornerRadii radius="6.0" />
+                            </radii>
+                            <insets>
+                                <Insets />
+                            </insets>
+                        </BackgroundFill>
+                    </fills>
+                </Background>
+            </background>
+        </Button>
+    </HBox>
+
+    <Label text="Listado de categorias">
+        <textFill>
+            <Color red="0.08627450980392157" green="0.12549019607843137" blue="0.2" />
+        </textFill>
+        <font>
+            <Font size="14.0" />
+        </font>
+    </Label>
+    <TableView fx:id="categoriaTable" prefHeight="240.0" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="idColumn" prefWidth="70.0" text="Id" />
+            <TableColumn fx:id="nombreColumn" prefWidth="260.0" text="Nombre" />
+            <TableColumn fx:id="activaColumn" prefWidth="120.0" text="Activa" />
+        </columns>
+    </TableView>
+
+    <Label fx:id="resultadoLabel" wrapText="true" />
+</VBox>

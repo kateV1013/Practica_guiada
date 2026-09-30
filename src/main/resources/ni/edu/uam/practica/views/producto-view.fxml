@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Background?>
+<?import javafx.scene.layout.BackgroundFill?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.CornerRadii?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="14.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="ni.edu.uam.practica.controllers.ProductoController">
+    <padding>
+        <Insets bottom="18.0" left="18.0" right="18.0" top="18.0" />
+    </padding>
+
+    <VBox spacing="3.0">
+        <Label text="Productos">
+            <textFill>
+                <Color red="0.08627450980392157" green="0.12549019607843137" blue="0.2" />
+            </textFill>
+            <font>
+                <Font size="20.0" />
+            </font>
+        </Label>
+        <Label text="Registra productos, precios, existencias y su categoria.">
+            <textFill>
+                <Color red="0.3568627450980392" green="0.39215686274509803" blue="0.4470588235294118" />
+            </textFill>
+        </Label>
+    </VBox>
+
+    <Separator />
+
+    <GridPane hgap="12.0" vgap="12.0">
+        <background>
+            <Background>
+                <fills>
+                    <BackgroundFill>
+                        <fill>
+                            <Color red="0.9725490196078431" green="0.9803921568627451" blue="0.9921568627450981" />
+                        </fill>
+                        <radii>
+                            <CornerRadii radius="8.0" />
+                        </radii>
+                        <insets>
+                            <Insets />
+                        </insets>
+                    </BackgroundFill>
+                </fills>
+            </Background>
+        </background>
+        <padding>
+            <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+        </padding>
+        <columnConstraints>
+            <ColumnConstraints minWidth="95.0" percentWidth="26.0" />
+            <ColumnConstraints hgrow="ALWAYS" percentWidth="74.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+        </rowConstraints>
+
+        <Label text="Id" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <TextField fx:id="idField" editable="false" promptText="Generado automaticamente"
+                   GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+        <Label text="Codigo" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <TextField fx:id="codigoField" promptText="P001" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+        <Label text="Nombre" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <TextField fx:id="nombreField" promptText="Producto" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+        <Label text="Categoria" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <ComboBox fx:id="categoriaCombo" maxWidth="Infinity" promptText="Seleccione"
+                  GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+        <Label text="Precio" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+        <TextField fx:id="precioField" promptText="25.50" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+        <Label text="Existencia" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+        <TextField fx:id="existenciaField" promptText="12" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+        <Label text="Estado" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+        <CheckBox fx:id="activoCheck" text="Producto activo" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+    </GridPane>
+
+    <HBox alignment="CENTER_RIGHT" spacing="8.0">
+        <Button onAction="#limpiarFormulario" text="Limpiar">
+            <background>
+                <Background>
+                    <fills>
+                        <BackgroundFill>
+                            <fill>
+                                <Color red="0.8862745098039215" green="0.9098039215686274" blue="0.9411764705882353" />
+                            </fill>
+                            <radii>
+                                <CornerRadii radius="6.0" />
+                            </radii>
+                            <insets>
+                                <Insets />
+                            </insets>
+                        </BackgroundFill>
+                    </fills>
+                </Background>
+            </background>
+        </Button>
+        <Button onAction="#eliminarProducto" text="Eliminar">
+            <textFill>
+                <Color red="0.7254901960784313" green="0.10980392156862745" blue="0.10980392156862745" />
+            </textFill>
+            <background>
+                <Background>
+                    <fills>
+                        <BackgroundFill>
+                            <fill>
+                                <Color red="0.996078431372549" green="0.8862745098039215" blue="0.8862745098039215" />
+                            </fill>
+                            <radii>
+                                <CornerRadii radius="6.0" />
+                            </radii>
+                            <insets>
+                                <Insets />
+                            </insets>
+                        </BackgroundFill>
+                    </fills>
+                </Background>
+            </background>
+        </Button>
+        <Button onAction="#actualizarProducto" text="Actualizar">
+            <background>
+                <Background>
+                    <fills>
+                        <BackgroundFill>
+                            <fill>
+                                <Color red="0.8862745098039215" green="0.9098039215686274" blue="0.9411764705882353" />
+                            </fill>
+                            <radii>
+                                <CornerRadii radius="6.0" />
+                            </radii>
+                            <insets>
+                                <Insets />
+                            </insets>
+                        </BackgroundFill>
+                    </fills>
+                </Background>
+            </background>
+        </Button>
+        <Button defaultButton="true" onAction="#guardarProducto" text="Guardar">
+            <textFill>
+                <Color red="1.0" green="1.0" blue="1.0" />
+            </textFill>
+            <background>
+                <Background>
+                    <fills>
+                        <BackgroundFill>
+                            <fill>
+                                <Color red="0.1450980392156863" green="0.38823529411764707" blue="0.9215686274509803" />
+                            </fill>
+                            <radii>
+                                <CornerRadii radius="6.0" />
+                            </radii>
+                            <insets>
+                                <Insets />
+                            </insets>
+                        </BackgroundFill>
+                    </fills>
+                </Background>
+            </background>
+        </Button>
+    </HBox>
+
+    <HBox alignment="CENTER_LEFT" spacing="10.0">
+        <TextField fx:id="busquedaField" HBox.hgrow="ALWAYS" promptText="Buscar por codigo, nombre o categoria" />
+        <ComboBox fx:id="estadoFiltroCombo" prefWidth="130.0" promptText="Estado" />
+        <ComboBox fx:id="categoriaFiltroCombo" prefWidth="180.0" promptText="Todas las categorias" />
+        <Button onAction="#limpiarFiltros" text="Todos" />
+    </HBox>
+
+    <Label text="Listado de productos">
+        <textFill>
+            <Color red="0.08627450980392157" green="0.12549019607843137" blue="0.2" />
+        </textFill>
+        <font>
+            <Font size="14.0" />
+        </font>
+    </Label>
+    <TableView fx:id="productoTable" prefHeight="260.0" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="idColumn" prefWidth="50.0" text="Id" />
+            <TableColumn fx:id="codigoColumn" prefWidth="90.0" text="Codigo" />
+            <TableColumn fx:id="nombreColumn" prefWidth="170.0" text="Nombre" />
+            <TableColumn fx:id="categoriaColumn" prefWidth="140.0" text="Categoria" />
+            <TableColumn fx:id="precioColumn" prefWidth="90.0" text="Precio" />
+            <TableColumn fx:id="existenciaColumn" prefWidth="90.0" text="Existencia" />
+            <TableColumn fx:id="activoColumn" prefWidth="80.0" text="Activo" />
+        </columns>
+    </TableView>
+
+    <Label fx:id="resultadoLabel" wrapText="true" />
+</VBox>
