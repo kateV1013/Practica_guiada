@@ -8,6 +8,9 @@ CREATE TABLE IF NOT EXISTS categoria (
     activa BOOLEAN NOT NULL DEFAULT TRUE
 );
 
+CREATE UNIQUE INDEX IF NOT EXISTS ux_categoria_nombre_lower
+ON categoria (LOWER(nombre));
+
 CREATE TABLE IF NOT EXISTS producto (
     id SERIAL PRIMARY KEY,
     codigo VARCHAR(50) NOT NULL UNIQUE,

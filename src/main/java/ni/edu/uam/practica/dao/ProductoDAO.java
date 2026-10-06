@@ -2,7 +2,7 @@ package ni.edu.uam.practica.dao;
 
 import ni.edu.uam.practica.models.Categoria;
 import ni.edu.uam.practica.models.Producto;
-import ni.edu.uam.practica.utils.DatabaseConnection;
+import ni.edu.uam.practica.models.utils.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -87,6 +87,38 @@ public class ProductoDAO {
         }
 
         return Optional.empty();
+    }
+
+    public boolean existeCodigo(String codigo, Integer idExcluir) throws SQLException {
+        String sql = idExcluir == null
+                ? """
+                    SELECT COUNT(*)
+                    FROM producto
+                    WHERE LOWER(codigo) = LOWER(?)
+                    """
+                : """
+                    SELECT COUNT(*)
+                    FROM producto
+                    WHERE LOWER(codigo) = LOWER(?)
+                      AND id <> ?
+                    """;
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setString(1, codigo);
+            if (idExcluir != null) {
+                ps.setInt(2, idExcluir);
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        }
+
+        return false;
     }
 
     public void actualizar(Producto producto) throws SQLException {

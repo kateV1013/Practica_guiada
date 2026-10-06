@@ -10,5 +10,5 @@ module ni.edu.uam.practica {
     exports ni.edu.uam.practica.controllers;
     exports ni.edu.uam.practica.dao;
     exports ni.edu.uam.practica.models;
-    exports ni.edu.uam.practica.utils;
+    exports ni.edu.uam.practica.models.utils;
 }

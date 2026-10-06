@@ -1,4 +1,4 @@
-package ni.edu.uam.practica.utils;
+package ni.edu.uam.practica.models.utils;
 
 public final class NumberUtils {
     private NumberUtils() {

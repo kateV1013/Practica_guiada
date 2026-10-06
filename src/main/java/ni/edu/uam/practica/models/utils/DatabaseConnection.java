@@ -1,4 +1,4 @@
-package ni.edu.uam.practica.utils;
+package ni.edu.uam.practica.models.utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -20,7 +20,7 @@ import ni.edu.uam.practica.dao.CategoriaDAO;
 import ni.edu.uam.practica.dao.ProductoDAO;
 import ni.edu.uam.practica.models.Categoria;
 import ni.edu.uam.practica.models.Producto;
-import ni.edu.uam.practica.utils.DatabaseErrorFormatter;
+import ni.edu.uam.practica.models.utils.DatabaseErrorFormatter;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -117,7 +117,9 @@ public class ProductoController {
     @FXML
     private void guardarProducto() {
         try {
-            productoDAO.guardar(leerProductoFormulario(null));
+            Producto producto = leerProductoFormulario(null);
+            validarCodigoDisponible(producto.getCodigo(), null);
+            productoDAO.guardar(producto);
             mostrarMensaje("Producto guardado correctamente.", false);
             limpiarFormulario();
             cargarProductos();
@@ -136,7 +138,10 @@ public class ProductoController {
         }
 
         try {
-            productoDAO.actualizar(leerProductoFormulario(Integer.parseInt(idField.getText())));
+            int id = Integer.parseInt(idField.getText());
+            Producto producto = leerProductoFormulario(id);
+            validarCodigoDisponible(producto.getCodigo(), id);
+            productoDAO.actualizar(producto);
             mostrarMensaje("Producto actualizado correctamente.", false);
             limpiarFormulario();
             cargarProductos();
@@ -258,10 +263,6 @@ public class ProductoController {
         if (existencia < 0) {
             throw new IllegalArgumentException("La existencia no puede ser negativa.");
         }
-        if (existeCodigoDuplicado(codigo, id)) {
-            throw new IllegalArgumentException("No se permiten codigos duplicados.");
-        }
-
         return new Producto(
                 id,
                 codigo,
@@ -274,10 +275,10 @@ public class ProductoController {
         );
     }
 
-    private boolean existeCodigoDuplicado(String codigo, Integer idActual) {
-        return productos.stream()
-                .anyMatch(producto -> producto.getCodigo().equalsIgnoreCase(codigo)
-                        && (idActual == null || !idActual.equals(producto.getId())));
+    private void validarCodigoDisponible(String codigo, Integer idActual) throws SQLException {
+        if (productoDAO.existeCodigo(codigo, idActual)) {
+            throw new IllegalArgumentException("Ya existe un producto con ese codigo.");
+        }
     }
 
     private void aplicarFiltros() {
@@ -331,8 +332,20 @@ public class ProductoController {
             return;
         }
 
+        File archivo = new File(ruta.trim());
+        if (!archivo.isFile()) {
+            fotoPreview.setImage(null);
+            mostrarMensaje("La foto seleccionada no existe o no es un archivo valido.", true);
+            return;
+        }
+
         try {
-            fotoPreview.setImage(new Image(new File(ruta).toURI().toString(), true));
+            Image imagen = new Image(archivo.toURI().toString());
+            if (imagen.isError()) {
+                throw new IllegalArgumentException("Imagen no valida.", imagen.getException());
+            }
+
+            fotoPreview.setImage(imagen);
         } catch (IllegalArgumentException e) {
             fotoPreview.setImage(null);
             mostrarMensaje("No se pudo cargar la foto seleccionada.", true);

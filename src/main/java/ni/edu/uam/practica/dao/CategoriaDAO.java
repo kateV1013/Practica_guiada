@@ -1,7 +1,7 @@
 package ni.edu.uam.practica.dao;
 
 import ni.edu.uam.practica.models.Categoria;
-import ni.edu.uam.practica.utils.DatabaseConnection;
+import ni.edu.uam.practica.models.utils.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -58,6 +58,60 @@ public class CategoriaDAO {
         }
 
         return Optional.empty();
+    }
+
+    public boolean existeNombre(String nombre, Integer idExcluir) throws SQLException {
+        String sql = idExcluir == null
+                ? """
+                    SELECT COUNT(*)
+                    FROM categoria
+                    WHERE LOWER(nombre) = LOWER(?)
+                    """
+                : """
+                    SELECT COUNT(*)
+                    FROM categoria
+                    WHERE LOWER(nombre) = LOWER(?)
+                      AND id <> ?
+                    """;
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setString(1, nombre);
+            if (idExcluir != null) {
+                ps.setInt(2, idExcluir);
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public boolean tieneProductos(int categoriaId) throws SQLException {
+        String sql = """
+                SELECT COUNT(*)
+                FROM producto
+                WHERE categoria_id = ?
+                """;
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setInt(1, categoriaId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        }
+
+        return false;
     }
 
     public void actualizar(Categoria categoria) throws SQLException {

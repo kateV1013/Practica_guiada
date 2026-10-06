@@ -3,6 +3,8 @@ package ni.edu.uam.practica.controllers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -11,9 +13,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import ni.edu.uam.practica.dao.CategoriaDAO;
 import ni.edu.uam.practica.models.Categoria;
-import ni.edu.uam.practica.utils.DatabaseErrorFormatter;
+import ni.edu.uam.practica.models.utils.DatabaseErrorFormatter;
 
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class CategoriaController {
     @FXML private TextField idField;
@@ -43,17 +46,19 @@ public class CategoriaController {
 
     @FXML
     private void guardarCategoria() {
-        if (nombreField.getText().isBlank()) {
-            mostrarMensaje("Ingrese el nombre de la categoría.", true);
-            return;
-        }
-
         try {
-            Categoria categoria = new Categoria(null, nombreField.getText().trim(), activaCheck.isSelected());
+            Categoria categoria = leerCategoriaFormulario(null);
+            if (categoriaDAO.existeNombre(categoria.getNombre(), null)) {
+                mostrarMensaje("Ya existe una categoria con ese nombre.", true);
+                return;
+            }
+
             categoriaDAO.guardar(categoria);
-            mostrarMensaje("Categoría guardada correctamente.", false);
+            mostrarMensaje("Categoria guardada correctamente.", false);
             limpiarFormulario();
             cargarCategorias();
+        } catch (IllegalArgumentException e) {
+            mostrarMensaje(e.getMessage(), true);
         } catch (SQLException e) {
             mostrarMensaje(DatabaseErrorFormatter.format("guardar", e), true);
         }
@@ -62,22 +67,26 @@ public class CategoriaController {
     @FXML
     private void actualizarCategoria() {
         if (idField.getText().isBlank()) {
-            mostrarMensaje("Seleccione una categoría para actualizar.", true);
+            mostrarMensaje("Seleccione una categoria para actualizar.", true);
             return;
         }
 
         try {
-            Categoria categoria = new Categoria(
-                    Integer.parseInt(idField.getText()),
-                    nombreField.getText().trim(),
-                    activaCheck.isSelected()
-            );
+            int id = Integer.parseInt(idField.getText());
+            Categoria categoria = leerCategoriaFormulario(id);
+            if (categoriaDAO.existeNombre(categoria.getNombre(), id)) {
+                mostrarMensaje("Ya existe una categoria con ese nombre.", true);
+                return;
+            }
+
             categoriaDAO.actualizar(categoria);
-            mostrarMensaje("Categoría actualizada correctamente.", false);
+            mostrarMensaje("Categoria actualizada correctamente.", false);
             limpiarFormulario();
             cargarCategorias();
         } catch (NumberFormatException e) {
-            mostrarMensaje("El id de la categoría no es válido.", true);
+            mostrarMensaje("El id de la categoria no es valido.", true);
+        } catch (IllegalArgumentException e) {
+            mostrarMensaje(e.getMessage(), true);
         } catch (SQLException e) {
             mostrarMensaje(DatabaseErrorFormatter.format("actualizar", e), true);
         }
@@ -86,17 +95,36 @@ public class CategoriaController {
     @FXML
     private void eliminarCategoria() {
         if (idField.getText().isBlank()) {
-            mostrarMensaje("Seleccione una categoría para eliminar.", true);
+            mostrarMensaje("Seleccione una categoria para eliminar.", true);
             return;
         }
 
         try {
-            categoriaDAO.eliminar(Integer.parseInt(idField.getText()));
-            mostrarMensaje("Categoría eliminada correctamente.", false);
+            int id = Integer.parseInt(idField.getText());
+            Categoria categoriaSeleccionada = categoriaTable.getSelectionModel().getSelectedItem();
+            if (categoriaDAO.tieneProductos(id)) {
+                mostrarMensaje("No puede eliminar la categoria porque tiene productos asociados.", true);
+                return;
+            }
+
+            Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmacion.setTitle("Confirmar eliminacion");
+            confirmacion.setHeaderText("Eliminar categoria");
+            confirmacion.setContentText("Desea eliminar la categoria "
+                    + (categoriaSeleccionada != null ? categoriaSeleccionada.getNombre() : id)
+                    + "?");
+
+            Optional<ButtonType> respuesta = confirmacion.showAndWait();
+            if (respuesta.isEmpty() || respuesta.get() != ButtonType.OK) {
+                return;
+            }
+
+            categoriaDAO.eliminar(id);
+            mostrarMensaje("Categoria eliminada correctamente.", false);
             limpiarFormulario();
             cargarCategorias();
         } catch (NumberFormatException e) {
-            mostrarMensaje("El id de la categoría no es válido.", true);
+            mostrarMensaje("El id de la categoria no es valido.", true);
         } catch (SQLException e) {
             mostrarMensaje(DatabaseErrorFormatter.format("eliminar", e), true);
         }
@@ -114,7 +142,7 @@ public class CategoriaController {
         try {
             categorias.setAll(categoriaDAO.listar());
         } catch (SQLException e) {
-            mostrarMensaje(DatabaseErrorFormatter.format("listar categorías", e), true);
+            mostrarMensaje(DatabaseErrorFormatter.format("listar categorias", e), true);
         }
     }
 
@@ -126,6 +154,16 @@ public class CategoriaController {
         idField.setText(String.valueOf(categoria.getId()));
         nombreField.setText(categoria.getNombre());
         activaCheck.setSelected(categoria.isActiva());
+    }
+
+    private Categoria leerCategoriaFormulario(Integer id) {
+        String nombre = nombreField.getText().trim();
+
+        if (nombre.isBlank()) {
+            throw new IllegalArgumentException("El nombre de la categoria es obligatorio.");
+        }
+
+        return new Categoria(id, nombre, activaCheck.isSelected());
     }
 
     private void mostrarMensaje(String mensaje, boolean error) {
